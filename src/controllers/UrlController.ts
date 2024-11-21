@@ -7,12 +7,11 @@ export class UrlController {
     async shortenUrl(req: Request, res: Response): Promise<void> {
         try {
             const { originalUrl } = req.body;
-
             if (!originalUrl) {
                 res.status(400).json({ error: "Original URL is required" });
                 return;
             }
-
+            
             const shortUrl = await this.urlService.shortenUrl(originalUrl);
             res.status(201).json({ shortUrl });
         } catch (error) {
@@ -24,14 +23,11 @@ export class UrlController {
     async redirect(req: Request, res: Response): Promise<void> {
         try {
             const { shortUrl } = req.params;
-
             if (!shortUrl) {
                 res.status(400).json({ error: "Short URL is required" });
                 return;
             }
-
             const originalUrl = await this.urlService.getOriginalUrl(shortUrl);
-
             if (originalUrl) {
                 res.redirect(originalUrl);
             } else {
